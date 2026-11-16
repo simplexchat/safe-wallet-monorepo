@@ -8456,48 +8456,63 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/context-module@npm:^1.7.0, @ledgerhq/context-module@npm:^1.8.0":
-  version: 1.8.0
-  resolution: "@ledgerhq/context-module@npm:1.8.0"
+"@ledgerhq/context-module@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "@ledgerhq/context-module@npm:2.8.0"
   dependencies:
-    axios: "npm:1.8.2"
+    bs58: "npm:^6.0.0"
     crypto-js: "npm:^4.2.0"
     ethers: "npm:6.14.1"
     inversify: "npm:7.5.1"
     purify-ts: "npm:2.1.0"
     reflect-metadata: "npm:0.2.2"
   peerDependencies:
-    "@ledgerhq/device-management-kit": ^0.9.0
-  checksum: 10/0b81522a7d821067375ab01edefc910882d25aaab2008d958006a872e4ac6360f702cc87d9c9e84fc24c7a75d24193d07071b838aa59129557bb718e5892afb7
+    "@ledgerhq/device-management-kit": ^1.11.0
+  checksum: 10/d610be66bf6960f656d8e897465c10b155a322d96ca2e2b6d8afb3772c927a8d961ba16687e3e2db57dfd82e92931cff1e89cb2ce23bba3fec5bbc0344acd93f
   languageName: node
   linkType: hard
 
-"@ledgerhq/device-management-kit@npm:^0.9.0, @ledgerhq/device-management-kit@npm:^0.9.1":
-  version: 0.9.1
-  resolution: "@ledgerhq/device-management-kit@npm:0.9.1"
+"@ledgerhq/device-contacts-kit@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@ledgerhq/device-contacts-kit@npm:0.5.0"
   dependencies:
-    "@sentry/minimal": "npm:6.19.7"
-    axios: "npm:1.8.2"
+    "@ledgerhq/signer-utils": "npm:^1.3.0"
+    inversify: "npm:7.5.1"
+    purify-ts: "npm:2.1.0"
+    reflect-metadata: "npm:0.2.2"
+    semver: "npm:7.7.2"
+    xstate: "npm:5.19.2"
+  peerDependencies:
+    "@ledgerhq/device-management-kit": ^1.9.1
+  checksum: 10/49e28dab32c1359f4bbd47424230f06bb3f815c2a93f210b7918ced4e067bc0d6616d4097e404dc5b0c4eee40098acda1405f2f82d4505fcc493e60bad51ea53
+  languageName: node
+  linkType: hard
+
+"@ledgerhq/device-management-kit@npm:^1.11.1":
+  version: 1.11.1
+  resolution: "@ledgerhq/device-management-kit@npm:1.11.1"
+  dependencies:
+    "@noble/hashes": "npm:^1.8.0"
     inversify: "npm:7.5.1"
     isomorphic-ws: "npm:^5.0.0"
     purify-ts: "npm:2.1.0"
     reflect-metadata: "npm:0.2.2"
     semver: "npm:7.7.2"
-    url: "npm:^0.11.4"
     uuid: "npm:11.0.3"
-    ws: "npm:^8.18.0"
+    ws: "npm:^8.22.0"
     xstate: "npm:5.19.2"
   peerDependencies:
     rxjs: 7.8.2
-  checksum: 10/dfc3e46f93fbd12ce79962a10973d67ba4f285872bbd3f758685100d284e3cc8acd6fd1f436465d766a83b4867281f86bacc998b947eb5284d166574fa262a15
+  checksum: 10/96863ecd9a4a208da845742dd8be4ae20fb06d2c86b54be7bc1bfca01f8a2ede20758fdca52ba21f0c56e2f98f5319bf297b3ded724bceb5a6c3a4853cb6e103
   languageName: node
   linkType: hard
 
-"@ledgerhq/device-signer-kit-ethereum@npm:^1.7.0, @ledgerhq/device-signer-kit-ethereum@npm:^1.8.0":
-  version: 1.8.0
-  resolution: "@ledgerhq/device-signer-kit-ethereum@npm:1.8.0"
+"@ledgerhq/device-signer-kit-ethereum@npm:^1.18.2":
+  version: 1.18.2
+  resolution: "@ledgerhq/device-signer-kit-ethereum@npm:1.18.2"
   dependencies:
-    "@ledgerhq/signer-utils": "npm:^1.1.0"
+    "@ledgerhq/device-contacts-kit": "npm:^0.5.0"
+    "@ledgerhq/signer-utils": "npm:^1.3.0"
     ethers: "npm:6.14.1"
     inversify: "npm:7.5.1"
     purify-ts: "npm:2.1.0"
@@ -8505,49 +8520,51 @@ __metadata:
     semver: "npm:7.7.2"
     xstate: "npm:5.19.2"
   peerDependencies:
-    "@ledgerhq/context-module": 1.8.0
-    "@ledgerhq/device-management-kit": ^0.9.0
-  checksum: 10/8fbfa8095adf3c1bbd625ac47473e9aa1b5bfff0821f4a4ca0fed77e3f42da06a8b2ab39c41ea39f2516b0e2a6dc096e894364c845e9e31e2d8b4d2db9552014
+    "@ledgerhq/context-module": ^2.7.0
+    "@ledgerhq/device-management-kit": ^1.11.0
+  checksum: 10/258ee65e6253820a4deb159477f4533cc598fcc1df0aa739ec591522787a7b5512fa550955831253422e4898e3c4b65a0b3b7a0be346776bc8e84b4b298049ca
   languageName: node
   linkType: hard
 
-"@ledgerhq/device-transport-kit-react-native-ble@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@ledgerhq/device-transport-kit-react-native-ble@npm:1.1.0"
+"@ledgerhq/device-transport-kit-react-native-ble@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@ledgerhq/device-transport-kit-react-native-ble@npm:1.3.2"
   dependencies:
     "@sentry/minimal": "npm:6.19.7"
-    js-base64: "npm:^3.7.7"
+    js-base64: "npm:^3.7.8"
     purify-ts: "npm:2.1.0"
     uuid: "npm:11.0.3"
   peerDependencies:
-    "@ledgerhq/device-management-kit": 0.8.0
+    "@ledgerhq/device-management-kit": ^1.0.0
     react-native: ">0.74.1"
     react-native-ble-plx: 3.4.0
-    rxjs: ^7.8.2
-  checksum: 10/a6a9bed882bec0595b60612790e65469fa2edf510c6c0ca9a1691116611f9816330127e4f2af370f5481323c3ef0ef46ee0f4ea55dbbafb44ba8cfe89dec7e4e
+    rxjs: 7.8.2
+  checksum: 10/50afe97ab1260f2537aa06ff107fddd3b1e906ca808c3a6bea672cfada8ef96a26088443a992a5795ec51441780225e84a8711b49e7987a720f4a8e02b9014ad
   languageName: node
   linkType: hard
 
-"@ledgerhq/device-transport-kit-web-hid@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@ledgerhq/device-transport-kit-web-hid@npm:1.2.0"
+"@ledgerhq/device-transport-kit-web-hid@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "@ledgerhq/device-transport-kit-web-hid@npm:1.2.4"
   dependencies:
     "@sentry/minimal": "npm:6.19.7"
     purify-ts: "npm:2.1.0"
     uuid: "npm:11.0.3"
   peerDependencies:
-    "@ledgerhq/device-management-kit": 0.8.0
-    rxjs: ^7.8.2
-  checksum: 10/b53cfe337fc4b7c8b247252285a95d432fd7906973da246352906d5b38b8e17d27b4afb969c15c02a9870344268108e0c865cf2bf37447b3c2a8f61487bac381
+    "@ledgerhq/device-management-kit": ^1.7.0
+    rxjs: 7.8.2
+  checksum: 10/e10171c6745ca8bef5b7a988e170fc234a110c64dbb322a17e08866013a8dccf6558b651942d9da2c4b2a8c69fcae5d873710393585b4158fa5bc29cff1910fd
   languageName: node
   linkType: hard
 
-"@ledgerhq/signer-utils@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@ledgerhq/signer-utils@npm:1.1.0"
+"@ledgerhq/signer-utils@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@ledgerhq/signer-utils@npm:1.3.0"
+  dependencies:
+    semver: "npm:7.7.2"
   peerDependencies:
-    "@ledgerhq/device-management-kit": 0.9.0
-  checksum: 10/17da5dc033ef84de2a3e6d7cb632bece22d238ae0540c570048ba489f49dbd138047e93572c603051e5b32ffe6988171e0adfa55e84484fc80003bd9753075c9
+    "@ledgerhq/device-management-kit": ^1.7.1
+  checksum: 10/c84860c8ae8d6a59c254d0d996555567f9d161f1a3eaf2e81e76ca192ddd1342e280cf4b3e0185b9e4aa1f949c01bde5d2765f059a8478c8c1d0b9bd538048a4
   languageName: node
   linkType: hard
 
@@ -11848,10 +11865,10 @@ __metadata:
     "@formatjs/intl-pluralrules": "npm:^5.4.3"
     "@gorhom/bottom-sheet": "npm:^5.2.6"
     "@hookform/resolvers": "npm:^4.1.3"
-    "@ledgerhq/context-module": "npm:^1.7.0"
-    "@ledgerhq/device-management-kit": "npm:^0.9.0"
-    "@ledgerhq/device-signer-kit-ethereum": "npm:^1.7.0"
-    "@ledgerhq/device-transport-kit-react-native-ble": "npm:^1.1.0"
+    "@ledgerhq/context-module": "npm:^2.8.0"
+    "@ledgerhq/device-management-kit": "npm:^1.11.1"
+    "@ledgerhq/device-signer-kit-ethereum": "npm:^1.18.2"
+    "@ledgerhq/device-transport-kit-react-native-ble": "npm:^1.3.2"
     "@notifee/react-native": "npm:^9.1.8"
     "@react-native-async-storage/async-storage": "npm:2.2.0"
     "@react-native-clipboard/clipboard": "npm:^1.16.3"
@@ -12295,10 +12312,10 @@ __metadata:
     "@eslint/js": "npm:^9.18.0"
     "@faker-js/faker": "npm:^9.0.3"
     "@gnosis.pm/zodiac": "npm:^4.0.3"
-    "@ledgerhq/context-module": "npm:^1.8.0"
-    "@ledgerhq/device-management-kit": "npm:^0.9.1"
-    "@ledgerhq/device-signer-kit-ethereum": "npm:^1.8.0"
-    "@ledgerhq/device-transport-kit-web-hid": "npm:^1.2.0"
+    "@ledgerhq/context-module": "npm:^2.8.0"
+    "@ledgerhq/device-management-kit": "npm:^1.11.1"
+    "@ledgerhq/device-signer-kit-ethereum": "npm:^1.18.2"
+    "@ledgerhq/device-transport-kit-web-hid": "npm:^1.2.4"
     "@mdx-js/loader": "npm:^3.0.1"
     "@mdx-js/react": "npm:^3.0.1"
     "@mui/icons-material": "npm:^6.1.6"
@@ -19117,17 +19134,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.8.2":
-  version: 1.8.2
-  resolution: "axios@npm:1.8.2"
-  dependencies:
-    follow-redirects: "npm:^1.15.6"
-    form-data: "npm:^4.0.0"
-    proxy-from-env: "npm:^1.1.0"
-  checksum: 10/d4328758128d0602cc809a8e7627622cb7839b379eae5e4d6b9d603dd4d5fb89159985630243ec107cf5c675cd8825dba737a319dff9499f3b7688d9a69ec9ed
-  languageName: node
-  linkType: hard
-
 "axios@npm:^1.13.2, axios@npm:^1.6.1, axios@npm:^1.8.2":
   version: 1.13.2
   resolution: "axios@npm:1.13.2"
@@ -19942,7 +19948,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bs58@npm:6.0.0":
+"bs58@npm:6.0.0, bs58@npm:^6.0.0":
   version: 6.0.0
   resolution: "bs58@npm:6.0.0"
   dependencies:
@@ -29225,10 +29231,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-base64@npm:^3.7.7":
-  version: 3.7.8
-  resolution: "js-base64@npm:3.7.8"
-  checksum: 10/4baa9a222bc094b072933e4894735653b59992477c731879784e3112f21862b08dd5c56b8b23b0b8e43bc5bb514d957621d1892a6c58950f29e12b731fe087b6
+"js-base64@npm:^3.7.8":
+  version: 3.9.6
+  resolution: "js-base64@npm:3.9.6"
+  checksum: 10/3be38244d33a8c6f1c7e20f2c1a62245e60c8f7e02702b11ca43bbeeec9d9097270a2dff08fe422859dc994876eaf38b00e290c38b365d7793aa54f6cf7554b4
   languageName: node
   linkType: hard
 
@@ -40243,7 +40249,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"url@npm:^0.11.0, url@npm:^0.11.4":
+"url@npm:^0.11.0":
   version: 0.11.4
   resolution: "url@npm:0.11.4"
   dependencies:
@@ -41566,6 +41572,21 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 10/725964438d752f0ab0de582cd48d6eeada58d1511c3f613485b5598a83680bedac6187c765b0fe082e2d8cc4341fc57707c813ae780feee82d0c5efe6a4c61b6
+  languageName: node
+  linkType: hard
+
+"ws@npm:^8.22.0":
+  version: 8.23.0
+  resolution: "ws@npm:8.23.0"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ">=5.0.2"
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 10/b9e8e16346288769bc945595e4dbb79e94f921e944e798ff7319e422efa05b10f670b2724b34729223689f4b9678e3089998392d236f10cbeccd5465a1b32c0a
   languageName: node
   linkType: hard
 
