@@ -11959,7 +11959,7 @@ __metadata:
     react-native-share: "npm:^12.2.0"
     react-native-svg: "npm:^15.13.0"
     react-native-vision-camera: "npm:^4.7.2"
-    react-native-web: "npm:^0.21.0"
+    react-native-web: "npm:^0.21.4"
     react-native-worklets: "npm:^0.5.1"
     react-redux: "npm:^9.1.2"
     redux: "npm:^5.0.1"
@@ -35194,9 +35194,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-web@npm:^0.21.0":
-  version: 0.21.1
-  resolution: "react-native-web@npm:0.21.1"
+"react-native-web@npm:^0.21.4":
+  version: 0.21.4
+  resolution: "react-native-web@npm:0.21.4"
   dependencies:
     "@babel/runtime": "npm:^7.18.6"
     "@react-native/normalize-colors": "npm:^0.74.1"
@@ -35209,7 +35209,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
-  checksum: 10/62cc21b514fd4abe3f9705bd9c835a7f6b910b41869f3c52d136e7ce758bbfa03f04e5df08ad430834faae236c575611430d69b4ca9cb87fb086c1a90392a784
+  checksum: 10/f8b67fdd44e2a5e6d00eaedd7182d05fab7766ccc7f075fe230464c3b05585d86e8aa05c56d067531551a2705b026921ee5a0cf298fe22da1974dbb983eea6fc
   languageName: node
   linkType: hard
 
