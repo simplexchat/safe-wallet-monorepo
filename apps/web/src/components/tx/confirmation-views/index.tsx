@@ -2,6 +2,7 @@ import type { TransactionDetails } from '@safe-global/store/gateway/AUTO_GENERAT
 import type { TransactionPreview } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 import type { SafeTransaction } from '@safe-global/types-kit'
 import {
+  getTimelockCalls,
   isAnyStakingTxInfo,
   isBridgeOrderTxInfo,
   isCustomTxInfo,
@@ -24,6 +25,7 @@ import { TxModalContext } from '@/components/tx-flow'
 import { isSettingsChangeView, isChangeThresholdView, isConfirmBatchView, isManageSignersView } from './utils'
 import { OnChainConfirmation } from '@/components/transactions/TxDetails/TxData/NestedTransaction/OnChainConfirmation'
 import { ExecTransaction } from '@/components/transactions/TxDetails/TxData/NestedTransaction/ExecTransaction'
+import { TimelockOperation } from '@/components/transactions/TxDetails/TxData/NestedTransaction/TimelockOperation'
 import { type ReactElement } from 'react'
 import SwapOrder from './SwapOrder'
 import StakingTx from './StakingTx'
@@ -76,6 +78,9 @@ const getConfirmationViewComponent = ({
   if (isOnChainConfirmationTxData(txData)) return <OnChainConfirmation data={txData} isConfirmationView />
 
   if (isExecTxData(txData)) return <ExecTransaction data={txData} isConfirmationView />
+
+  const timelockCalls = getTimelockCalls(txData)
+  if (timelockCalls) return <TimelockOperation data={txData} calls={timelockCalls} isConfirmationView />
 
   if (isSwapOrderTxInfo(txInfo) || isTwapOrderTxInfo(txInfo)) return <SwapOrder txInfo={txInfo} txData={txData} />
 

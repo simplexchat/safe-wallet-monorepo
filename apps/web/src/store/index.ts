@@ -48,6 +48,7 @@ import { migrateBatchTxs } from '@/services/ls-migration/batch'
 import { apiSliceWithChainsConfig } from '@safe-global/store/gateway'
 import { cgwErrorAlert } from './middleware/cgwErrorAlert'
 import { forbiddenSessionListener } from '@/services/sessionExpiry/forbiddenSessionListener'
+import { decodeWithPinnedContracts } from './api/gateway/pinnedContracts'
 
 const rootReducer = combineReducers({
   [slices.safeInfoSlice.name]: slices.safeInfoSlice.reducer,
@@ -209,6 +210,7 @@ export const _hydrationReducer: typeof rootReducer = (state, action) => {
 
 export const makeStore = (initialState?: Partial<RootState>) => {
   setBaseUrl(GATEWAY_URL)
+  decodeWithPinnedContracts()
 
   const store = configureStore({
     reducer: _hydrationReducer,

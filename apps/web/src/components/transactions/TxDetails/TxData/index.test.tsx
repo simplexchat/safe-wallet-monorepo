@@ -184,3 +184,55 @@ describe('TxData — spending limit batch', () => {
     expect(result.getByText('Delete spending limit:')).toBeInTheDocument()
   })
 })
+
+describe('TxData — timelock operation', () => {
+  beforeEach(() => {
+    ;(useSafeAddress as jest.Mock).mockReturnValue(faker.finance.ethereumAddress())
+    ;(useChainId as jest.Mock).mockReturnValue('1')
+  })
+
+  it('renders the calls of a timelock operation as a nested transaction in place of the decoded data', () => {
+    const timelock = faker.finance.ethereumAddress()
+    const txData = {
+      to: { value: timelock },
+      operation: Operation.CALL,
+      hexData: '0x',
+      dataDecoded: {
+        method: 'schedule',
+        parameters: [
+          { name: 'target', type: 'address', value: faker.finance.ethereumAddress() },
+          { name: 'value', type: 'uint256', value: '0' },
+          {
+            name: 'data',
+            type: 'bytes',
+            value: '0x',
+            valueDecoded: [
+              {
+                operation: Operation.CALL,
+                to: faker.finance.ethereumAddress(),
+                value: '0',
+                data: '0x',
+                dataDecoded: { method: 'setPublicSalesOpen', parameters: [] },
+              },
+            ],
+          },
+        ],
+      },
+    } as unknown as TransactionData
+    const txInfo = {
+      type: TransactionInfoType.CUSTOM,
+      methodName: 'schedule',
+      to: { value: timelock },
+    } as unknown as TransactionDetails['txInfo']
+
+    const result = render(
+      <TxData txInfo={txInfo} txData={txData} trusted imitation={false}>
+        <div>decoded children</div>
+      </TxData>,
+    )
+
+    expect(result.getByText('Nested transaction')).toBeInTheDocument()
+    expect(result.getAllByText('setPublicSalesOpen').length).toBeGreaterThan(0)
+    expect(result.queryByText('decoded children')).not.toBeInTheDocument()
+  })
+})

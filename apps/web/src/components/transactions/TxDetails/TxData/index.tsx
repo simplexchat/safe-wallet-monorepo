@@ -4,6 +4,7 @@ import SettingsChangeTxInfo from '@/components/transactions/TxDetails/TxData/Set
 import {
   isStakingTxExitInfo,
   isBridgeOrderTxInfo,
+  getTimelockCalls,
   isExecTxData,
   isLifiSwapTxInfo,
   isOnChainConfirmationTxData,
@@ -37,6 +38,7 @@ import { SwapFeature } from '@/features/swap'
 import { useLoadFeature } from '@/features/__core__'
 import { OnChainConfirmation } from './NestedTransaction/OnChainConfirmation'
 import { ExecTransaction } from './NestedTransaction/ExecTransaction'
+import { TimelockOperation } from './NestedTransaction/TimelockOperation'
 import SafeUpdate from './SafeUpdate'
 import { VaultDepositTxDetails, VaultRedeemTxDetails } from '@/features/earn'
 import DecodedData from './DecodedData'
@@ -137,6 +139,11 @@ const TxData = ({
 
   if (isExecTxData(txData)) {
     return <ExecTransaction data={txData} />
+  }
+
+  const timelockCalls = getTimelockCalls(txData)
+  if (txData && timelockCalls) {
+    return <TimelockOperation data={txData} calls={timelockCalls} />
   }
 
   if (isSafeUpdateTxData(txData)) {

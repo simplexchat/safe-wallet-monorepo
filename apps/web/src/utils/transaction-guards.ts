@@ -43,6 +43,7 @@ import type {
   Erc721Transfer,
   ModuleExecutionDetails,
   ModuleExecutionInfo,
+  MultiSend,
   NativeCoinTransfer,
   TransactionItemPage,
   SwapTransferTransactionInfo,
@@ -440,6 +441,13 @@ export const isExecTxInfo = (info: TransactionInfo): info is CustomTransactionIn
 
 export const isNestedConfirmationTxInfo = (info: TransactionInfo): boolean => {
   return isCustomTxInfo(info) && (isOnChainConfirmationTxInfo(info) || isExecTxInfo(info))
+}
+
+export const TIMELOCK_CALLS_PARAMETER = 2
+
+export const getTimelockCalls = (data?: TransactionData | null): MultiSend[] | undefined => {
+  const calls = data?.dataDecoded?.parameters?.[TIMELOCK_CALLS_PARAMETER]?.valueDecoded
+  return Array.isArray(calls) ? calls : undefined
 }
 
 export const isSafeUpdateTxData = (data?: TransactionData | null): boolean => {
