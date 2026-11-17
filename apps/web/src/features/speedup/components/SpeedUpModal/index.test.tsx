@@ -49,6 +49,7 @@ jest.mock('@/services/tx/tx-sender', () => ({
 }))
 
 jest.mock('@safe-global/store/gateway/AUTO_GENERATED/transactions', () => ({
+  ...jest.requireActual('@safe-global/store/gateway/AUTO_GENERATED/transactions'),
   useLazyTransactionsGetTransactionByIdV1Query: jest.fn(() => [jest.fn(() => Promise.resolve({ data: undefined }))]),
 }))
 
