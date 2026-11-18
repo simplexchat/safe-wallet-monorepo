@@ -37,7 +37,7 @@ import * as slices from './slices'
 import * as hydrate from './useHydrateStore'
 import { ofacApi } from '@/store/api/ofac'
 import { safePassApi } from './api/safePass'
-import { readMainnetThroughInfura } from './api/gateway/mainnetRpc'
+import { replaceMainnetRpc } from './api/gateway/mainnetRpc'
 import { beamerApi } from './api/beamer'
 import { hypernativeApi } from '@safe-global/store/hypernative/hypernativeApi'
 import { safenetCheckApi } from '@safe-global/store/safenet/safenetCheckApi'
@@ -209,7 +209,7 @@ export const _hydrationReducer: typeof rootReducer = (state, action) => {
   return rootReducer(state, action) as RootState
 }
 
-if (INFURA_TOKEN) readMainnetThroughInfura()
+if (INFURA_TOKEN) replaceMainnetRpc()
 
 export const makeStore = (initialState?: Partial<RootState>) => {
   setBaseUrl(GATEWAY_URL)
