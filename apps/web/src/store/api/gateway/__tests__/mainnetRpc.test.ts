@@ -73,8 +73,9 @@ describe('replaceMainnetRpc', () => {
 
   it('should send a mainnet read of a direct cache reader to Infura with the token', async () => {
     const methods = serveInfuraMainnet()
+    const address = fakerChecksummedAddress()
 
-    const { result } = renderHook(() => useGetIsSanctionedQuery(fakerChecksummedAddress()))
+    const { result } = renderHook(() => useGetIsSanctionedQuery(address))
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
     expect(result.current.data).toBe(false)
