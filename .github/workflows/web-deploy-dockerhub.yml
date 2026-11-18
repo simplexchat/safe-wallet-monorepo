@@ -1,24 +1,6 @@
 name: Web Deploy to Dockerhub
 
 on:
-  pull_request:
-    branches:
-      - docker
-    paths:
-      - apps/web/**
-      - packages/**
-
-  push:
-    branches:
-      - main
-      - dev
-    paths:
-      - apps/web/**
-      - packages/**
-
-  release:
-    types: [released]
-
   workflow_dispatch:
     inputs:
       tag:

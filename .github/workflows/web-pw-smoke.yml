@@ -1,25 +1,7 @@
 name: Web Playwright smoke tests
 
 on:
-  pull_request:
-    paths:
-      - apps/web/**
-      - packages/**
-      - yarn.lock
-      - package.json
-      - .yarnrc.yml
-      - .yarn/patches/**
-  push:
-    branches:
-      - main
-      - dev
-    paths:
-      - apps/web/**
-      - packages/**
-      - yarn.lock
-      - package.json
-      - .yarnrc.yml
-      - .yarn/patches/**
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

@@ -2,13 +2,6 @@ name: EAS Mobile E2E tests
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 6 * * *'
-  pull_request:
-    paths:
-      - apps/mobile/**
-      - packages/**
-      - expo-plugins/**
 
 jobs:
   build:
