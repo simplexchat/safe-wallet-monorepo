@@ -1,8 +1,8 @@
 import { http, HttpResponse } from 'msw'
-import { createMockChain } from '@safe-global/test'
 import { renderHook, waitFor } from '@/tests/test-utils'
 import { server } from '@/tests/server'
 import { GATEWAY_URL } from '@/config/gateway'
+import { chainBuilder } from '@/tests/builders/chains'
 import { useChain } from '@/hooks/useChains'
 
 jest.mock('@safe-global/utils/config/constants', () => ({
@@ -10,17 +10,21 @@ jest.mock('@safe-global/utils/config/constants', () => ({
   INFURA_TOKEN: 'test-infura-token',
 }))
 
-const SAFE_RPC = 'https://rpc.safe.global'
+const gatewayRpc = (chainId: string) => ({
+  authentication: 'NO_AUTHENTICATION' as const,
+  value: `https://rpc.safe.global/${chainId}/`,
+})
 
 describe('chain list read by the web app with an Infura token', () => {
   beforeEach(() => {
     server.use(
       http.get(`${GATEWAY_URL}/v2/chains`, () =>
         HttpResponse.json({
-          results: [
-            createMockChain({ chainId: '1', rpcUri: `${SAFE_RPC}/1/` }),
-            createMockChain({ chainId: '137', rpcUri: `${SAFE_RPC}/137/` }),
-          ],
+          results: ['1', '137'].map((chainId) =>
+            chainBuilder()
+              .with({ chainId, rpcUri: gatewayRpc(chainId) })
+              .build(),
+          ),
           next: null,
         }),
       ),
@@ -38,6 +42,6 @@ describe('chain list read by the web app with an Infura token', () => {
     const { result } = renderHook(() => useChain('137'))
 
     await waitFor(() => expect(result.current).toBeDefined())
-    expect(result.current?.rpcUri).toEqual({ authentication: 'NO_AUTHENTICATION', value: `${SAFE_RPC}/137/` })
+    expect(result.current?.rpcUri).toEqual(gatewayRpc('137'))
   })
 })
