@@ -6,16 +6,14 @@ On GitHub Pages, mainnet reads through the RPC of the production gateway's chain
 
 Readers of the mainnet `rpcUri`:
 
-- the read-only provider: ENS names
-- the read-only provider: RPC balance reads
-- the read-only provider: nonce reads
+- the read-only provider (`useInitWeb3`) and every reader of it
 - the ENS hub provider
 - the sanctions check
 - the module guard
 - Safe creation
 - policies
 - the Safe scope provider
-- the mainnet chain of hardware wallets and the private-key wallet
+- the wallet RPC of hardware wallets and the private-key wallet
 - the RPC calls of Safe Apps
 - the RPC settings placeholder
 - RPC error attribution
@@ -29,24 +27,25 @@ Readers of the mainnet `rpcUri`:
 - Condition:
   - `IS_PRODUCTION` is true
   - `INFURA_TOKEN` is non-empty
-- Set up: once, in `apps/web/src/pages/_app.tsx`, before its store is created; the TanStack runtime evaluates the same module through `apps/web-tanstack/src/routes/__root.tsx`.
+- Set up: once, in `apps/web/src/pages/_app.tsx`, before its store is created; the same module is evaluated by the TanStack runtime through `apps/web-tanstack/src/routes/__root.tsx`.
 - Unchanged:
   - other chains
   - the mobile app
   - builds with `IS_PRODUCTION` false, including the isolated end-to-end stack
   - precedence of the user's custom RPC
-- Changed for users:
-  - the RPC calls of Safe Apps on mainnet are sent to Infura with `SAFE_APPS_INFURA_TOKEN`, which is `INFURA_TOKEN` when unset
-  - the mainnet placeholder of Settings → Environment variables → RPC provider is `https://mainnet.infura.io/v3/`
-  - RPC errors of the mainnet read-only provider are attributed to `infura`
+- Changed for users, on mainnet:
+  - the RPC of hardware wallets and the private-key wallet is Infura with `INFURA_TOKEN`
+  - the RPC calls of Safe Apps are sent to Infura with `SAFE_APPS_INFURA_TOKEN`, which is `INFURA_TOKEN` when unset
+  - the placeholder of Settings → Environment variables → RPC provider is `https://mainnet.infura.io/v3/`
+  - RPC errors of the read-only provider are attributed to `infura`
 
 ## Mechanics
 
-| Part                                           | Change                                                                        |
-| ---------------------------------------------- | ----------------------------------------------------------------------------- |
-| `apps/web/src/store/api/gateway/mainnetRpc.ts` | `replaceMainnetRpc()` wraps the `queryFn` of `getChainsConfigV2`              |
-| wrapper                                        | `chainsAdapter.updateOne` sets `rpcUri` of chain `1` in a successful result   |
-| `apps/web/src/pages/_app.tsx`                  | `if (IS_PRODUCTION && INFURA_TOKEN) replaceMainnetRpc()` before `makeStore()` |
+| Part                                           | Change                                                                                |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `apps/web/src/store/api/gateway/mainnetRpc.ts` | the `queryFn` of `getChainsConfigV2` is wrapped by `replaceMainnetRpc()`              |
+| wrapper                                        | in a successful result, the `rpcUri` of chain `1` is set by `chainsAdapter.updateOne` |
+| `apps/web/src/pages/_app.tsx`                  | `if (IS_PRODUCTION && INFURA_TOKEN) replaceMainnetRpc()` before `makeStore()`         |
 
 ```mermaid
 flowchart LR
@@ -61,7 +60,7 @@ flowchart LR
   C --> D["direct cache readers<br/>sanctions check, module guard"]
   H --> P["provider builders"]
   D --> P
-  P -- "custom RPC, where the builder accepts one" --> CU["custom RPC URL"]
+  P -- "custom RPC, where accepted" --> CU["custom RPC URL"]
   P -- otherwise --> K{"provider"}
   K -- "read-only, wallets" --> U["value + INFURA_TOKEN"]
   K -- "Safe Apps" --> S["value + SAFE_APPS_INFURA_TOKEN"]
@@ -71,12 +70,20 @@ flowchart LR
 
 ## Acceptance
 
+In a production build with a token:
+
 - The `rpcUri` of chain `1` is `API_KEY_PATH` `https://mainnet.infura.io/v3/`.
 - The `rpcUri` of chain `137` is unchanged.
 - The `eth_call` of the sanctions check is sent to `https://mainnet.infura.io/v3/<token>`.
 - A failed chain list is returned unchanged.
-- At `26dc12bf`, the test of chain `1`'s `rpcUri` fails on the code of `main`: https://github.com/simplexchat/safe-wallet-monorepo/actions/runs/44273529603
-- Untested:
-  - the line in `_app.tsx`: a test would load the entry module with its styles and observability setup
-  - the `throw` in `mainnetRpc.ts`: `getChainsConfigV2` is defined with a `queryFn`
-  - TanStack coverage: it depends on `__root.tsx` importing `@/pages/_app`
+
+Evidence:
+
+- At `26dc12bf`, the first form of the chain `1` test fails on the code of `main`: https://github.com/simplexchat/safe-wallet-monorepo/actions/runs/44273529603
+- Static exports served from an origin outside Safe's domains: `main` has 12 of 12 mainnet RPC requests blocked; the branch has 20 of 20 sent to `mainnet.infura.io` with HTTP 200.
+
+Untested:
+
+- the line in `_app.tsx`
+- the `throw` in `mainnetRpc.ts`
+- TanStack coverage through the import of `@/pages/_app` in `__root.tsx`
