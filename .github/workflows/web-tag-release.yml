@@ -1,13 +1,7 @@
 name: Web Tag, Release & Deploy
 
 on:
-  pull_request_target:
-    branches:
-      - main
-    types: [closed]
-    paths:
-      - apps/web/**
-      - packages/**
+  workflow_dispatch:
 
 permissions: {}
 

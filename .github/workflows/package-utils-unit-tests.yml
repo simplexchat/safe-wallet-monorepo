@@ -46,6 +46,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.relevant == 'true'
     permissions:
+      contents: read
       checks: write
       pull-requests: read
       statuses: write
@@ -86,7 +87,8 @@ jobs:
   result:
     # The one check that branch protection requires for this workflow.
     name: Utils unit tests result
-    permissions: {}
+    permissions:
+      contents: read
     if: always()
     needs: [changes, test]
     runs-on: ubuntu-latest
