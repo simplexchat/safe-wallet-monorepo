@@ -4,7 +4,7 @@ import chains from '@safe-global/utils/config/chains'
 
 const INFURA_MAINNET_RPC: RpcUri = { authentication: 'API_KEY_PATH', value: 'https://mainnet.infura.io/v3/' }
 
-export const replaceMainnetRpc = () =>
+export const replaceMainnetRpc = (): void => {
   apiSliceWithChainsConfig.enhanceEndpoints({
     endpoints: {
       getChainsConfigV2: (definition) => {
@@ -21,3 +21,4 @@ export const replaceMainnetRpc = () =>
       },
     },
   })
+}
