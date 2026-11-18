@@ -106,7 +106,7 @@ jobs:
 
   base-coverage:
     needs: changes
-    if: needs.changes.outputs.relevant == 'true' && github.event_name == 'pull_request'
+    if: needs.changes.outputs.relevant == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     permissions:
       contents: read
 
@@ -136,7 +136,7 @@ jobs:
 
   coverage-report:
     needs: [changes, test, base-coverage]
-    if: always() && needs.changes.outputs.relevant == 'true' && github.event_name == 'pull_request' && needs.test.result != 'cancelled'
+    if: always() && needs.changes.outputs.relevant == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && needs.test.result != 'cancelled'
     permissions:
       contents: read
       checks: write
