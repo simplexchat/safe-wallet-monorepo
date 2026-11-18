@@ -13,6 +13,8 @@ import { AppProviders, SafeScopedSubscriptions } from '@/pages/_app'
 import { BRAND_NAME } from '@/config/constants'
 import { GATEWAY_URL } from '@/config/gateway'
 import { makeStore, setStoreInstance, useHydrateStore, useInitChains } from '@/store'
+import { replaceMainnetRpc } from '@/store/api/gateway/mainnetRpc'
+import { INFURA_TOKEN } from '@safe-global/utils/config/constants'
 import MetaTags from '@/components/common/MetaTags'
 import PageLayout from '@/components/common/PageLayout'
 import PwaReloadPrompt from '../components/PwaReloadPrompt'
@@ -53,6 +55,8 @@ import '@/styles/shadcn.css'
 if (typeof window !== 'undefined') {
   initObservability()
 }
+
+if (INFURA_TOKEN) replaceMainnetRpc()
 
 const reduxStore = makeStore()
 setStoreInstance(reduxStore)
