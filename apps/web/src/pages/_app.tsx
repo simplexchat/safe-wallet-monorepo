@@ -11,7 +11,7 @@ const LazyWeb3Init = dynamic(() => import('@/components/common/LazyWeb3Init'), {
 import { Provider } from 'react-redux'
 import '@/styles/globals.css'
 import '@/styles/shadcn.css'
-import { BRAND_NAME } from '@/config/constants'
+import { BRAND_NAME, IS_PRODUCTION } from '@/config/constants'
 import { makeStore, setStoreInstance, useHydrateStore, useInitChains } from '@/store'
 import { replaceMainnetRpc } from '@/store/api/gateway/mainnetRpc'
 import { INFURA_TOKEN } from '@safe-global/utils/config/constants'
@@ -110,7 +110,7 @@ if (typeof window !== 'undefined') {
   initObservability([new DatadogProvider(), new MixpanelTracingProvider()])
 }
 
-if (INFURA_TOKEN) replaceMainnetRpc()
+if (IS_PRODUCTION && INFURA_TOKEN) replaceMainnetRpc()
 
 const reduxStore = makeStore()
 setStoreInstance(reduxStore)
