@@ -2,13 +2,9 @@
 
 ## Problem
 
-On GitHub Pages, mainnet reads through the RPC of the gateway's chain list fail. In the production gateway's chain list, the mainnet `rpcUri` is `https://rpc.safe.global/1/`, without authentication. The CORS pre-flight of that host is answered:
+On GitHub Pages, mainnet reads through the RPC of the production gateway's chain list fail: that RPC, `https://rpc.safe.global/1/`, refuses the Pages origin.
 
-- from `https://laughing-carnival-w9n8mnm.pages.github.io`: 403
-- from `https://app.safe.global`: 204
-- from `http://localhost:3000`: 204
-
-Readers of this value:
+Readers of the mainnet `rpcUri`:
 
 - the read-only provider: ENS names, RPC balance and nonce reads
 - the ENS hub provider
@@ -24,20 +20,20 @@ Readers of this value:
 
 ## Decisions
 
-- The mainnet `rpcUri` is replaced where the chain list enters the web store.
+- The mainnet `rpcUri` is replaced in the result of the `getChainsConfigV2` query function.
 - Replacement:
   - authentication: `API_KEY_PATH`
   - value: `https://mainnet.infura.io/v3/`
-- Condition: the build has `NEXT_PUBLIC_INFURA_TOKEN`.
-- Set up: at each runtime entry, before its store is created.
+- Condition: `INFURA_TOKEN` is non-empty.
+- Set up: once, in `apps/web/src/pages/_app.tsx`, before its store is created; the TanStack runtime evaluates the same module through `apps/web-tanstack/src/routes/__root.tsx`.
 - Unchanged:
   - other chains
   - the mobile app
   - precedence of the user's custom RPC
 - Changed for users:
-  - the RPC calls of Safe Apps on mainnet go to Infura with `NEXT_PUBLIC_SAFE_APPS_INFURA_TOKEN`, which is the build's Infura token when unset
+  - the RPC calls of Safe Apps on mainnet go to Infura with `SAFE_APPS_INFURA_TOKEN`, which is `INFURA_TOKEN` when unset
   - the mainnet placeholder of Settings → Environment variables → RPC provider is `https://mainnet.infura.io/v3/`
-  - RPC errors on mainnet are attributed to `infura`
+  - RPC errors of the mainnet read-only provider are attributed to `infura`
 
 ## Mechanics
 
@@ -46,7 +42,6 @@ Readers of this value:
 | `apps/web/src/store/api/gateway/mainnetRpc.ts` | `replaceMainnetRpc()` wraps the `queryFn` of `getChainsConfigV2`            |
 | wrapper                                        | `chainsAdapter.updateOne` sets `rpcUri` of chain `1` in a successful result |
 | `apps/web/src/pages/_app.tsx`                  | `if (INFURA_TOKEN) replaceMainnetRpc()` before `makeStore()`                |
-| `apps/web-tanstack/src/routes/__root.tsx`      | `if (INFURA_TOKEN) replaceMainnetRpc()` before `makeStore()`                |
 
 ```mermaid
 flowchart LR
@@ -57,12 +52,13 @@ flowchart LR
   R --> C["RTK Query cache"]
   C --> H["useChains / useChain"]
   C --> D["direct cache readers<br/>sanctions check, module guard"]
-  H --> X{"custom RPC set?"}
-  X -- yes --> CU["custom RPC URL"]
-  X -- no --> P["provider builders"]
+  H --> P["provider builders"]
   D --> P
-  P --> U["read-only provider, wallets<br/>value + INFURA_TOKEN"]
-  P --> S["Safe Apps<br/>value + SAFE_APPS_INFURA_TOKEN"]
+  P --> X{"custom RPC set?"}
+  X -- yes --> CU["custom RPC URL"]
+  X -- no --> K{"provider"}
+  K -- "read-only, wallets" --> U["value + INFURA_TOKEN"]
+  K -- "Safe Apps" --> S["value + SAFE_APPS_INFURA_TOKEN"]
   U --> I["https://mainnet.infura.io/v3/&lt;token&gt;"]
   S --> I
 ```
@@ -73,4 +69,5 @@ flowchart LR
 - Chain `137` keeps the gateway's `rpcUri`.
 - A sanctions check sends its `eth_call` to `https://mainnet.infura.io/v3/<token>`.
 - A failed chain list is returned unchanged.
-- The first test, at the commit before the fix, fails on the code of `main`.
+- At `26dc12bf`, the test of chain `1`'s `rpcUri` fails on the code of `main`.
+- Untested: the line in `_app.tsx`.
