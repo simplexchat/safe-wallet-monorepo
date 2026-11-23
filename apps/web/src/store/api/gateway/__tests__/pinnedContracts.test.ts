@@ -12,7 +12,7 @@ import {
   type TransactionPreview,
 } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 
-const NAME_POLICY = '0xf7054e2fB9EBfd49DD68cAFFDBE661c03a59b823'
+const NAME_POLICY = '0x5147b65F547b766DBaf520127e8f59834475021E'
 
 const addReservedNames = new Interface(['function addReservedNames(string[] names, uint8 reason)']).encodeFunctionData(
   'addReservedNames',

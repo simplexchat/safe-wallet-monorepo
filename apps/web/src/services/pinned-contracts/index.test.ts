@@ -38,6 +38,8 @@ const pinnedAddress = (name: string): string => {
 const namePolicy = pinnedAddress('SimplexNamePolicy')
 const controller = pinnedAddress('SimplexController')
 const priceOracle = pinnedAddress('SimplexPriceOracle')
+const sponsor = pinnedAddress('SimplexSponsor')
+const namePolicyProxyAdmin = pinnedAddress('SimplexNamePolicy ProxyAdmin')
 const timelock = pinnedAddress('TimelockController')
 
 const abi = new Interface([
@@ -46,6 +48,7 @@ const abi = new Interface([
   'function setPrices(uint256 newBasePriceCentsPerYear, (uint256 labelLength, uint256 priceCentsPerYear)[] newPrices)',
   'function schedule(address target, uint256 value, bytes data, bytes32 predecessor, bytes32 salt, uint256 delay)',
   'function scheduleBatch(address[] targets, uint256[] values, bytes[] payloads, bytes32 predecessor, bytes32 salt, uint256 delay)',
+  'function setRegistrarAllowance(address registrar, uint256 allowanceUSD)',
   'function unpinned(uint256 value)',
 ])
 
@@ -165,6 +168,74 @@ describe('decodePinnedContracts', () => {
       },
       otherCall,
     ])
+  })
+
+  it('decodes the acceptance of the controller and the price oracle in one MultiSend', () => {
+    const acceptOwnership = '0x79ba5097'
+    const multiSend = {
+      method: 'multiSend',
+      parameters: [
+        {
+          name: 'transactions',
+          type: 'bytes',
+          value: '0x',
+          valueDecoded: [
+            { operation: Operation.CALL, to: controller, value: '0', data: acceptOwnership },
+            { operation: Operation.CALL, to: priceOracle, value: '0', data: acceptOwnership },
+          ],
+        },
+      ],
+    }
+
+    const { dataDecoded } = decodePinnedContracts('1', txDataTo(fakerChecksummedAddress(), '0x8d80ff0a', multiSend))
+
+    expect(dataDecoded?.parameters?.[0].valueDecoded).toEqual([
+      {
+        operation: Operation.CALL,
+        to: controller,
+        value: '0',
+        data: acceptOwnership,
+        dataDecoded: { method: 'acceptOwnership', parameters: [] },
+      },
+      {
+        operation: Operation.CALL,
+        to: priceOracle,
+        value: '0',
+        data: acceptOwnership,
+        dataDecoded: { method: 'acceptOwnership', parameters: [] },
+      },
+    ])
+  })
+
+  it('decodes an upgrade through a ProxyAdmin with its proxy and its implementation', () => {
+    const upgradeNamePolicy =
+      '0x9623609d0000000000000000000000005147b65f547b766dbaf520127e8f59834475021e000000000000000000000000f0f7f7769ea2bb6b7d41af8c7a2424f45eb87b5000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000'
+
+    const { dataDecoded } = decodePinnedContracts('1', txDataTo(namePolicyProxyAdmin, upgradeNamePolicy))
+
+    expect(dataDecoded).toEqual({
+      method: 'upgradeAndCall',
+      parameters: [
+        { name: 'proxy', type: 'address', value: '0x5147b65F547b766DBaf520127e8f59834475021E' },
+        { name: 'implementation', type: 'address', value: '0xF0F7f7769Ea2BB6b7d41Af8c7A2424f45Eb87B50' },
+        { name: 'data', type: 'bytes', value: '0x' },
+      ],
+    })
+  })
+
+  it('decodes the allowance of a registrar on the sponsor', () => {
+    const registrar = fakerChecksummedAddress()
+    const setAllowance = abi.encodeFunctionData('setRegistrarAllowance', [registrar, 10n ** 23n])
+
+    const { dataDecoded } = decodePinnedContracts('1', txDataTo(sponsor, setAllowance))
+
+    expect(dataDecoded).toEqual({
+      method: 'setRegistrarAllowance',
+      parameters: [
+        { name: 'registrar', type: 'address', value: registrar },
+        { name: 'allowanceUSD', type: 'uint256', value: '100000000000000000000000' },
+      ],
+    })
   })
 
   it('decodes the calls of a batch scheduled on a pinned timelock', () => {

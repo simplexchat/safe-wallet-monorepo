@@ -2,7 +2,7 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Interface } from 'ethers'
+import { FunctionFragment } from 'ethers'
 import prettier from 'prettier'
 
 const contractsPath = resolve(
@@ -24,7 +24,15 @@ const fetchVerified = async (chainId, address) => {
   return response.json()
 }
 
-const fetchAbi = async (chainId, address) => {
+const fetchImplementationsAbi = async (chainId, implementations) =>
+  (await Promise.all(implementations.map((implementation) => fetchVerified(chainId, implementation)))).flatMap(
+    ({ abi }) => abi,
+  )
+
+const fetchAbi = async (chainId, address, implementations) => {
+  if (implementations) {
+    return fetchImplementationsAbi(chainId, implementations)
+  }
   const { abi, proxyResolution } = await fetchVerified(chainId, address)
   if (!proxyResolution.isProxy) {
     return abi
@@ -38,17 +46,23 @@ const fetchAbi = async (chainId, address) => {
   return [...abi, ...implementation.abi]
 }
 
-const stateChangingFunctions = (abi) =>
-  new Interface(abi.filter(({ type }) => type === 'function')).fragments
-    .filter((fragment) => !fragment.constant)
-    .map((fragment) => fragment.format('full'))
+const stateChangingFunctions = (abi) => [
+  ...new Set(
+    abi
+      .filter(({ type }) => type === 'function')
+      .map((fragment) => FunctionFragment.from(fragment))
+      .filter((fragment) => !fragment.constant)
+      .map((fragment) => fragment.format('full')),
+  ),
+]
 
 const pinContracts = async (chainId, contracts) =>
   Promise.all(
-    contracts.map(async ({ name, address }) => ({
+    contracts.map(async ({ name, address, implementations }) => ({
       name,
       address,
-      functions: stateChangingFunctions(await fetchAbi(chainId, address)),
+      ...(implementations && { implementations }),
+      functions: stateChangingFunctions(await fetchAbi(chainId, address, implementations)),
     })),
   )
 

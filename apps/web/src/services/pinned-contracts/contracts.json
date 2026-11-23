@@ -2,8 +2,10 @@
   "1": [
     {
       "name": "ENSRegistry",
-      "address": "0xa7f6497be2F1Aa41aa2db55AbA8a6E0145dFF0D2",
+      "address": "0x3ce23Ef6A00D89105299B52AaDd72b92681414be",
+      "implementations": ["0x25483aa3A2F0C11741b3A7482b8873Dcc3eceB8C"],
       "functions": [
+        "function initialize(address rootOwner)",
         "function setApprovalForAll(address operator, bool approved)",
         "function setApprovalForAllWithSig(address approvalOwner, address operator, bool approved, uint256 nonce, uint256 deadline, bytes sig)",
         "function setOwner(bytes32 node, address owner)",
@@ -15,55 +17,37 @@
       ]
     },
     {
-      "name": "BaseRegistrarImplementation",
-      "address": "0x44052f7dc9C1cEF20b0319A6B75288988dBb12a1",
+      "name": "ENSRegistry ProxyAdmin",
+      "address": "0xB89AEAAa02D761EAE1c9697021e9E73867d14aE3",
       "functions": [
-        "function addController(address controller)",
-        "function approve(address to, uint256 tokenId)",
-        "function approveWithSig(address from, address to, uint256 tokenId, uint256 nonce, uint256 deadline, bytes sig, bytes ephemeralPubKey, bytes1 viewTag)",
-        "function claimWithSig(address from, address to, uint256 tokenId, uint256 offer, uint256 nonce, uint256 deadline, bytes sig)",
-        "function reclaim(uint256 id, address owner)",
-        "function registerWithLabel(string label, address owner, uint256 duration) returns (uint256)",
-        "function removeController(address controller)",
-        "function renew(uint256 id, uint256 duration) returns (uint256)",
         "function renounceOwnership()",
-        "function safeTransferFrom(address from, address to, uint256 tokenId)",
-        "function safeTransferFrom(address from, address to, uint256 tokenId, bytes data)",
-        "function setApprovalForAll(address operator, bool approved)",
-        "function setMaxLabelLength(uint256 newMax)",
-        "function setMetadataRenderer(address renderer)",
-        "function setNamePolicy(address newNamePolicy)",
-        "function setResolver(address resolver)",
-        "function setSubnameHook(address hook)",
-        "function transferFrom(address from, address to, uint256 tokenId)",
-        "function transferOwnership(address newOwner)"
+        "function transferOwnership(address newOwner)",
+        "function upgradeAndCall(address proxy, address implementation, bytes data) payable"
       ]
     },
     {
-      "name": "SimplexPriceOracle",
-      "address": "0x3754fBcD143Ab41204f7Fa02d8C69aC86b5C0ee8",
+      "name": "BaseRegistrarImplementation ProxyAdmin",
+      "address": "0xC945516fde9a832D0a56Ac35a2d4726E5916e082",
       "functions": [
-        "function acceptOwnership()",
         "function renounceOwnership()",
-        "function setPrices(uint256 newBasePriceCentsPerYear, (uint256 labelLength, uint256 priceCentsPerYear)[] newPrices)",
-        "function setUsdOracle(address newOracle, uint8 decimals)",
-        "function transferOwnership(address newOwner)"
+        "function transferOwnership(address newOwner)",
+        "function upgradeAndCall(address proxy, address implementation, bytes data) payable"
       ]
     },
     {
       "name": "SimplexController",
-      "address": "0x8005011c6E966656cDb9A222E9A4792600A37219",
+      "address": "0x68Fab655A0204865a2f3AB3a607037e09648c92B",
+      "implementations": ["0x7e33b4ac0EcA8B19c4051Ae6151d519FA1DA38cF"],
       "functions": [
         "function acceptOwnership()",
         "function commit(bytes32 commitment)",
         "function disableNftGate()",
-        "function freeze()",
         "function initialize(address _base, address _prices, uint256 _minCommitmentAge, uint256 _maxCommitmentAge, address _ens, (bytes32 tldNode, string tldSuffix, uint8 minCharLength, address smpxNft, bool nftGateEnabled) _config, address _owner)",
         "function recoverFunds(address _token, address _to, uint256 _amount)",
         "function register((string label, address owner, uint256 duration, bytes32 secret, address resolver, bytes[] data, uint8 reverseRecord, bytes32 referrer) registration) payable",
-        "function registerSponsored((string label, address owner, uint256 duration, bytes32 secret, address resolver, bytes[] data, uint8 reverseRecord, bytes32 referrer) registration)",
+        "function registerSponsored((string label, address owner, uint256 duration, bytes32 secret, address resolver, bytes[] data, uint8 reverseRecord, bytes32 referrer) registration, uint256 disputeDays)",
         "function renew(string label, uint256 duration, bytes32 referrer) payable",
-        "function renewSponsored(string label, uint256 duration, bytes32 referrer)",
+        "function renewSponsored(string label, uint256 duration, bytes32 referrer, address holder)",
         "function renounceOwnership()",
         "function setBeneficiary(address newBeneficiary)",
         "function setDefaultResolver(address resolver)",
@@ -73,19 +57,32 @@
         "function setPublicSalesOpen(bool open)",
         "function setSponsor(address newSponsor)",
         "function transferOwnership(address newOwner)",
-        "function upgradeTo(address newImplementation)",
-        "function upgradeToAndCall(address newImplementation, bytes data) payable",
+        "function unregister(string label, uint256 until)",
         "function withdraw()"
       ]
     },
     {
+      "name": "SimplexController ProxyAdmin",
+      "address": "0xC99567779A379cA3905F0991A7658851c9c1B00A",
+      "functions": [
+        "function renounceOwnership()",
+        "function transferOwnership(address newOwner)",
+        "function upgradeAndCall(address proxy, address implementation, bytes data) payable"
+      ]
+    },
+    {
       "name": "SimplexNamePolicy",
-      "address": "0xf7054e2fB9EBfd49DD68cAFFDBE661c03a59b823",
+      "address": "0x5147b65F547b766DBaf520127e8f59834475021E",
+      "implementations": ["0xF0F7f7769Ea2BB6b7d41Af8c7A2424f45Eb87B50"],
       "functions": [
         "function acceptCommunityTermsForClaim(uint256 tokenId, address from, uint256 offer, bytes32 acceptedTermsHash)",
         "function acceptCommunityTermsForClaimWithSig(uint256 tokenId, address from, uint256 offer, bytes32 acceptedTermsHash, address recipient, uint256 nonce, uint256 deadline, bytes sig)",
+        "function acceptCommunityTermsForRenewal(uint256 tokenId, uint256 expires, uint256 duration, bytes32 acceptedTermsHash)",
+        "function acceptCommunityTermsForRenewalWithSig(uint256 tokenId, uint256 expires, uint256 duration, bytes32 acceptedTermsHash, address holder, uint256 nonce, uint256 deadline, bytes sig)",
         "function acceptGeneralTermsForClaim(uint256 tokenId, address from, uint256 offer, bytes32 acceptedTermsHash)",
         "function acceptGeneralTermsForClaimWithSig(uint256 tokenId, address from, uint256 offer, bytes32 acceptedTermsHash, address recipient, uint256 nonce, uint256 deadline, bytes sig)",
+        "function acceptGeneralTermsForRenewal(uint256 tokenId, uint256 expires, uint256 duration, bytes32 acceptedTermsHash)",
+        "function acceptGeneralTermsForRenewalWithSig(uint256 tokenId, uint256 expires, uint256 duration, bytes32 acceptedTermsHash, address holder, uint256 nonce, uint256 deadline, bytes sig)",
         "function addCommunityNames(string[] names)",
         "function addReservedNames(string[] names, uint8 reason)",
         "function commitUnderCommunityTerms(bytes32 commitment, bytes32 acceptedTermsHash)",
@@ -93,20 +90,29 @@
         "function commitUnderGeneralTerms(bytes32 commitment, bytes32 acceptedTermsHash)",
         "function commitUnderGeneralTermsWithSig(bytes32 commitment, bytes32 acceptedTermsHash, address acceptor, uint256 nonce, uint256 deadline, bytes sig)",
         "function consumeRegistration(string label, bytes32 labelhash, bytes32 commitment, address owner)",
+        "function consumeRenewal(string label, bytes32 labelhash, uint256 duration, address holder)",
         "function consumeTransfer(uint256 tokenId, address from, address to, uint256 offer, string label)",
         "function registerReserved(string label, address owner, uint256 duration)",
         "function removeCommunityNames(string[] names)",
         "function removeReservedNames(string[] names)",
         "function setCommunityTerms(string link)",
         "function setGeneralTerms(string link)",
-        "function setReservationReason(string[] names, uint8 reason)",
-        "function upgradeTo(address newImplementation)",
-        "function upgradeToAndCall(address newImplementation, bytes data) payable"
+        "function setReservationReason(string[] names, uint8 reason)"
+      ]
+    },
+    {
+      "name": "SimplexNamePolicy ProxyAdmin",
+      "address": "0xc4B3697Eb385981FCB58517B8868B2B955AF0b9E",
+      "functions": [
+        "function renounceOwnership()",
+        "function transferOwnership(address newOwner)",
+        "function upgradeAndCall(address proxy, address implementation, bytes data) payable"
       ]
     },
     {
       "name": "SubnameRegistrar",
-      "address": "0xdD1ef51B4D3175F7B4610F1cC41bA67577aD7077",
+      "address": "0x86D2248Fb5f3b14a1CA3904978314AD5450d4dC9",
+      "implementations": ["0x3D87365B23A2Bc01CD9134d4202C762b6F506F30"],
       "functions": [
         "function createSubname(bytes32 parentNode, string label) returns (bytes32 node)",
         "function createSubnameWithSig(bytes32 parentNode, string label, uint256 nonce, uint256 deadline, bytes sig) returns (bytes32 node)",
@@ -119,8 +125,18 @@
       ]
     },
     {
+      "name": "SubnameRegistrar ProxyAdmin",
+      "address": "0xb34158488B213Ed5a157A45DA665E7561237CEE1",
+      "functions": [
+        "function renounceOwnership()",
+        "function transferOwnership(address newOwner)",
+        "function upgradeAndCall(address proxy, address implementation, bytes data) payable"
+      ]
+    },
+    {
       "name": "SimplexResolver",
-      "address": "0x0d9474F386A8884c603E960e100BA5c4f210Fb70",
+      "address": "0x9BDa37F19b59Cbc58BA75932B3c598947fD88B0A",
+      "implementations": ["0xF5064Ae06CF32De2B9Ba8952C5873CD10983ee65"],
       "functions": [
         "function approve(bytes32 node, address delegate, bool approved)",
         "function clearRecords(bytes32 node)",
@@ -144,12 +160,69 @@
       ]
     },
     {
-      "name": "SimplexSponsor",
-      "address": "0x9C551AC86a9B39E86E4f777B4bbcA8E782de0B9d",
+      "name": "SimplexResolver ProxyAdmin",
+      "address": "0x4F76Aab091079E1645fc3bB250fEb89de09EB42c",
       "functions": [
-        "function registerWithCredit((string label, address owner, uint256 duration, bytes32 secret, address resolver, bytes[] data, uint8 reverseRecord, bytes32 referrer) registration, uint256 nonce, uint256 deadline, bytes sig)",
-        "function renewWithCredit(string label, uint256 duration, bytes32 referrer)",
+        "function renounceOwnership()",
+        "function transferOwnership(address newOwner)",
+        "function upgradeAndCall(address proxy, address implementation, bytes data) payable"
+      ]
+    },
+    {
+      "name": "SimplexSponsor",
+      "address": "0xeC9a522C756e46FB3E44d3405FFDd9368501Eb78",
+      "implementations": ["0x2f3c5421143A549DDbe869b1b57Cc3F8e11930e0"],
+      "functions": [
+        "function registerWithCredit((string label, address owner, uint256 duration, bytes32 secret, address resolver, bytes[] data, uint8 reverseRecord, bytes32 referrer) registration, uint256 disputeDays, uint256 nonce, uint256 deadline, bytes sig)",
+        "function renewWithCredit(string label, uint256 duration, bytes32 referrer, address holder)",
         "function setRegistrarAllowance(address registrar, uint256 allowanceUSD)"
+      ]
+    },
+    {
+      "name": "SimplexSponsor ProxyAdmin",
+      "address": "0xb5B4938E108423CDeeFA5a30BDE73F1684550cE8",
+      "functions": [
+        "function renounceOwnership()",
+        "function transferOwnership(address newOwner)",
+        "function upgradeAndCall(address proxy, address implementation, bytes data) payable"
+      ]
+    },
+    {
+      "name": "UniversalResolver",
+      "address": "0x9f2364913A723ca064858e3210E73CAB88BF7d71",
+      "implementations": ["0x50fcFA987C5bd26387000e67C3eC996bac45986A"],
+      "functions": []
+    },
+    {
+      "name": "UniversalResolver ProxyAdmin",
+      "address": "0x1C9913a6B465Af3e3A14f0f4846966c2F327e761",
+      "functions": [
+        "function renounceOwnership()",
+        "function transferOwnership(address newOwner)",
+        "function upgradeAndCall(address proxy, address implementation, bytes data) payable"
+      ]
+    },
+    {
+      "name": "SimplexPriceOracle",
+      "address": "0x6fDC7Ccd9718E58F896236D1b4Ebed0FF7a5eE53",
+      "functions": [
+        "function acceptOwnership()",
+        "function renounceOwnership()",
+        "function setPrices(uint256 newBasePriceCentsPerYear, (uint256 labelLength, uint256 priceCentsPerYear)[] newPrices)",
+        "function setUsdOracle(address newOracle, uint8 decimals)",
+        "function transferOwnership(address newOwner)"
+      ]
+    },
+    {
+      "name": "Root",
+      "address": "0x2514222C065C9fd436cD76D6C721dc73FCa4Cb77",
+      "functions": [
+        "function lock(bytes32 label)",
+        "function renounceOwnership()",
+        "function setController(address controller, bool enabled)",
+        "function setResolver(address resolver)",
+        "function setSubnodeOwner(bytes32 label, address owner)",
+        "function transferOwnership(address newOwner)"
       ]
     }
   ]

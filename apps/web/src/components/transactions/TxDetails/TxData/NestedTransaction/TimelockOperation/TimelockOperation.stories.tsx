@@ -36,7 +36,7 @@ const data: TransactionData = {
 const calls: MultiSend[] = [
   {
     operation: Operation.CALL,
-    to: '0xf7054e2fB9EBfd49DD68cAFFDBE661c03a59b823',
+    to: '0x5147b65F547b766DBaf520127e8f59834475021E',
     value: '0',
     data: '0x',
     dataDecoded: {
@@ -49,7 +49,7 @@ const calls: MultiSend[] = [
   },
   {
     operation: Operation.CALL,
-    to: '0x8005011c6E966656cDb9A222E9A4792600A37219',
+    to: '0x68Fab655A0204865a2f3AB3a607037e09648c92B',
     value: '0',
     data: '0x',
     dataDecoded: { method: 'setPublicSalesOpen', parameters: [{ name: 'open', type: 'bool', value: 'false' }] },
