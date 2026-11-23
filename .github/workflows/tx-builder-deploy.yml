@@ -1,19 +1,6 @@
 name: tx-builder Deploy
 
 on:
-  pull_request:
-    paths:
-      - apps/tx-builder/**
-      - packages/**
-      - .github/workflows/tx-builder-deploy.yml
-
-  push:
-    branches:
-      - dev
-    paths:
-      - apps/tx-builder/**
-      - packages/**
-
   workflow_dispatch:
     inputs:
       release:

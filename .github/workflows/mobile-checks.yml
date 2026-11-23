@@ -103,7 +103,8 @@ jobs:
   result:
     # The one check that branch protection requires for this workflow.
     name: Mobile checks result
-    permissions: {}
+    permissions:
+      contents: read
     if: always()
     needs: [changes, lint, prettier, type-check]
     runs-on: ubuntu-latest

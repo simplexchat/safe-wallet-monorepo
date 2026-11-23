@@ -8,9 +8,6 @@ name: Web Argos Storybook
 # Storybook baseline apart from the Cypress one.
 
 on:
-  # Weekly baseline on dev. Release checks are started by hand.
-  schedule:
-    - cron: '0 5 * * 1'
   workflow_dispatch:
     inputs:
       reference_branch:

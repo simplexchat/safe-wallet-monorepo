@@ -11,9 +11,6 @@ on:
         description: Number of parallel Playwright jobs, each with its own backend
         required: false
         default: '3'
-  # No paths filter: the required result check must report on every pull request, so the plan job detects changes.
-  pull_request:
-    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
